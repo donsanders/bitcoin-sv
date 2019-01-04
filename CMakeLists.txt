@@ -16,7 +16,7 @@ if(CCACHE)
 	set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE})
 endif(CCACHE)
 
-# Add the magic taret check and check-all
+# Add the magic target check and check-all
 add_custom_target(check-all)
 add_custom_target(check)
 
