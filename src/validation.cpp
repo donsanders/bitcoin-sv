@@ -793,6 +793,9 @@ static bool AcceptToMemoryPoolWorker(
         for (const CTxIn &txin : tx.vin) {
             auto itConflicting = pool.mapNextTx.find(txin.prevout);
             if (itConflicting != pool.mapNextTx.end()) {
+	        if (!tx.IsEquivalentTo(*itConflicting->second)) {
+		    LogPrintf("DSD::!!! Double spend detected, [%s, %s]\n", tx.GetId().ToString(), itConflicting->second->GetId().ToString());
+		}
                 // Disable replacement feature for good
                 return state.Invalid(false, REJECT_CONFLICT,
                                      "txn-mempool-conflict");

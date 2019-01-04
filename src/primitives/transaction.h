@@ -299,6 +299,9 @@ public:
     const TxId GetId() const { return TxId(hash); }
     const TxHash GetHash() const { return TxHash(hash); }
 
+    // True if only scriptSigs are different
+    bool IsEquivalentTo(const CTransaction& tx) const;
+
     // Return sum of txouts.
     Amount GetValueOut() const;
     // GetValueIn() is a method on CCoinsViewCache, because

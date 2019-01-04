@@ -72,6 +72,20 @@ CTransaction::CTransaction(CMutableTransaction &&tx)
     : nVersion(tx.nVersion), vin(std::move(tx.vin)), vout(std::move(tx.vout)),
       nLockTime(tx.nLockTime), hash(ComputeHash()) {}
 
+bool CTransaction::IsEquivalentTo(const CTransaction& tx) const {
+    if (nVersion   != tx.nVersion   ||
+        nLockTime  != tx.nLockTime  ||
+        vin.size() != tx.vin.size() ||
+        vout       != tx.vout)
+        return false;
+    for (unsigned int i = 0; i < vin.size(); i++) {
+        if (vin[i].nSequence != tx.vin[i].nSequence ||
+            vin[i].prevout   != tx.vin[i].prevout)
+            return false;
+    }
+    return true;
+}
+
 Amount CTransaction::GetValueOut() const {
     Amount nValueOut(0);
     for (std::vector<CTxOut>::const_iterator it(vout.begin()); it != vout.end();
