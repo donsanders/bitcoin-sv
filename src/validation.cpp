@@ -795,6 +795,8 @@ static bool AcceptToMemoryPoolWorker(
             if (itConflicting != pool.mapNextTx.end()) {
 	        if (!tx.IsEquivalentTo(*itConflicting->second)) {
 		    LogPrintf("DSD::!!! Double spend detected, [%s, %s]\n", tx.GetId().ToString(), itConflicting->second->GetId().ToString());
+                    // Inform out connections including monitoring nodes that the double spend exists
+                    GetMainSignals().TransactionAddedToMempool(ptx);
 		}
                 // Disable replacement feature for good
                 return state.Invalid(false, REJECT_CONFLICT,
